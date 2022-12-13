@@ -4,8 +4,8 @@ bool isEmpty(Queue q) {
     return (q.nNode == 0);
 }
 
-Node* getNode(const string ID, int priority) {
-    Node* p = new Node;
+ListNode* getListNode(const string ID, int priority) {
+    ListNode* p = new ListNode;
 
     p->ID = ID;
     p->order = 0;
@@ -15,12 +15,12 @@ Node* getNode(const string ID, int priority) {
     return p;
 }
 
-Node* Insert(Queue &q, const string ID, int priority) {
-    Node* p = getNode(ID, priority);
+ListNode* Insert(Queue &q, const string ID, int priority) {
+    ListNode* p = getListNode(ID, priority);
     p->order = ++(q.nNode);
     
-    Node* p1 = q.head;
-    Node* p2 = p1->next;
+    ListNode* p1 = q.head;
+    ListNode* p2 = p1->next;
     while ((p2 != nullptr) && (p->priority > p2->priority)) {
         p1 = p2;
         p2 = p2->next;
@@ -32,15 +32,15 @@ Node* Insert(Queue &q, const string ID, int priority) {
     return p;
 }
 
-Node* Extract(Queue &q) {
+ListNode* Extract(Queue &q) {
     if (isEmpty(q)) return nullptr;
 
-    Node* p = q.head->next;
+    ListNode* p = q.head->next;
     q.head->next = p->next;
     p->next = nullptr;
 
     int order = p->order;
-    for (Node* r = q.head->next; r != nullptr; r = r->next)
+    for (ListNode* r = q.head->next; r != nullptr; r = r->next)
         if (r->order > order) --(r->order);
     --(q.nNode);
 
@@ -48,8 +48,8 @@ Node* Extract(Queue &q) {
 }
 
 bool Remove(Queue &q, const string ID) {
-    Node* p1 = q.head;
-    Node* p2 = p1->next;
+    ListNode* p1 = q.head;
+    ListNode* p2 = p1->next;
 
     while ((p2 != nullptr) && (p2->ID.compare(ID) != 0)) {
         p1 = p2;
@@ -62,7 +62,7 @@ bool Remove(Queue &q, const string ID) {
         delete p2;
 
         // Update the order
-        for (Node* p = q.head->next; p != nullptr; p = p->next)
+        for (ListNode* p = q.head->next; p != nullptr; p = p->next)
             if (p->order > order) --(p->order);
         --(q.nNode);
 
@@ -72,9 +72,9 @@ bool Remove(Queue &q, const string ID) {
     return false;
 }
 
-Node* changePriority(Queue &q, const string ID, int newPriority) {
-    Node* p1 = q.head;
-    Node* p2 = p1->next;
+ListNode* changePriority(Queue &q, const string ID, int newPriority) {
+    ListNode* p1 = q.head;
+    ListNode* p2 = p1->next;
 
     while ((p2 != nullptr) && (p2->ID.compare(ID) != 0)) {
         p1 = p2;
@@ -83,8 +83,8 @@ Node* changePriority(Queue &q, const string ID, int newPriority) {
 
     if (p2 == nullptr) return nullptr;
     
-    Node* updateNode = p2;
-    Node *r1, *r2;
+    ListNode* updateNode = p2;
+    ListNode *r1, *r2;
     if (newPriority > updateNode->priority) {
         //  ...     p1  --> updateNode  --> updateNode->next    ...
         //  ...     r1  --> updateNode  --> r2                  ...
@@ -115,13 +115,13 @@ void Print(Queue q) {
         return;
     }
 
-    for (Node* p = q.head->next; p != nullptr; p = p->next)
+    for (ListNode* p = q.head->next; p != nullptr; p = p->next)
         cout << "(\"" << p->ID << "\", " << p->priority << ", " << p->order << ") --> ";
     cout << "(x)" << endl;
 }
 
 void Delete(Queue &q) {
-    Node* temp;
+    ListNode* temp;
     while (q.head != nullptr) {
         temp = q.head;
         q.head = q.head->next;

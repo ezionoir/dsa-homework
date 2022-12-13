@@ -6,24 +6,24 @@
 
 using namespace std;
 
-struct Node {
+struct ListNode {
     string ID;
     int order;
     int priority;
-    Node* next;
+    ListNode* next;
 };
 
 struct Queue {
-    Node* head; // dummy head
+    ListNode* head; // dummy head
     int nNode;
 };
 
 bool isEmpty(Queue q);
-Node* getNode(const string ID, int priority);
-Node* Insert(Queue &q, const string ID, int priority);
-Node* Extract(Queue &q);
+ListNode* getListNode(const string ID, int priority);
+ListNode* Insert(Queue &q, const string ID, int priority);
+ListNode* Extract(Queue &q);
 bool Remove(Queue &q, const string ID);
-Node* changePriority(Queue &q, const string ID, int newPriority);
+ListNode* changePriority(Queue &q, const string ID, int newPriority);
 void Print(Queue q);
 void Delete(Queue &q);
 
