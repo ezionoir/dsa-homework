@@ -139,6 +139,23 @@ void remove(List *L, int index, int data, bool removeOnEmptied = 1) {
 	}
 }
 
+int pop(List *L, int index, bool removeOnEmptied = 1) {
+	NodePair np = findIndex(L, index);
+	Node *prev = np.current;
+	Node *ptr = np.current->nextMember;
+	while (ptr->nextMember) {
+		prev = ptr;
+		ptr = ptr->nextMember;
+	}
+	prev->nextMember = nullptr;
+	int res = ptr->key;
+	delete ptr;
+	if (removeOnEmptied)
+		if (memberSize(np.current) == 0)
+			removeIndex(L, np);
+	return res;
+}
+
 void removeAll(List *L, int data, bool removeOnEmptied = 1) {
 	Node *ptr = L->head;
 	while (ptr) {
@@ -153,10 +170,16 @@ List* createList() {
 	return L;
 }
 
-void removeList(List *&L) {
+void clearList(List *L) {
 	while (!isEmpty(L)) {
 		removeIndex(L, L->head->key);
 	}
+}
+
+void removeList(List *&L) {
+	clearList(L);
+	delete L;
+	L = nullptr;
 }
 
 void printList(List *L) {
