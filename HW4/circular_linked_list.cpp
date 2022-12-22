@@ -115,3 +115,10 @@ void printList(List *L) {
 	} while (ptr != L->tail->next);
 	cout << endl;
 }
+
+void removeList(List *&L) {
+	while (!isEmpty(L))
+		removeHead(L);
+	delete L;
+	L = NULL;
+}

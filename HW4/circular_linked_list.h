@@ -30,3 +30,5 @@ bool addAfter(List *L, int data, int val);
 void removeAfter(List *L, int val);
 
 void printList(List *L);
+
+void removeList(List *&L);

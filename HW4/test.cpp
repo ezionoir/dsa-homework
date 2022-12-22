@@ -6,6 +6,7 @@ int menuCmd(List *L, int option) {
 	int data, val;
 	switch (option) {
 		case 0:
+			removeList(L);
 			return 0;
 		case 1:
 			cout << "Data = ";
