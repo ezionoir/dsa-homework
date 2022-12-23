@@ -45,6 +45,10 @@ int max(int a, int b);
 
 int nodeHeight(RBNode *x, RBNode *nil);
 
+void removeSubTree(RBNode *&root, RBNode *nil);
+
+void removeTree(RBNode *&root, RBNode *&nil);
+
 void Insert(RBNode *&root, int key, RBNode *nil);
 
 RBNode* createTree(int a[], int n, RBNode *&nil);

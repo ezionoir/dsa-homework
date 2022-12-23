@@ -214,6 +214,20 @@ int nodeHeight(RBNode *x, RBNode *nil) {
 	return max(nodeHeight(x->left, nil), nodeHeight(x->right, nil)) + 1;
 }
 
+void removeSubTree(RBNode *&root, RBNode *nil) {
+	if (root == nil) return;
+	removeSubTree(root->left, nil);
+	removeSubTree(root->right, nil);
+	delete root;
+	root = nil;
+}
+
+void removeTree(RBNode *&root, RBNode *&nil) {
+	removeSubTree(root, nil);
+	delete nil;
+	root = nil = NULL;
+}
+
 void Insert(RBNode *&root, int key, RBNode *nil) {
 	RBNode *x = createNode(key, RED, nil);
 	insertBST(root, x, nil);
@@ -293,4 +307,5 @@ int Remove(RBNode *root, int key, RBNode *nil) {
 // 	cout << "BlackHeight: " << BlackHeight(root) << endl;
 // 	printPreOrder(root, nil);
 // 	cout << endl;
+// 	removeTree(root, nil);
 // }
