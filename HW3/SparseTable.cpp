@@ -1,3 +1,5 @@
+// https://www.geeksforgeeks.org/sparse-table/
+
 #include "./SparseTable.h"
 
 // Import a table from file
