@@ -28,7 +28,7 @@ int main() {
 			add(L, num[i], -1); //valid number must be positive, thus -1 was chosen as placeholder
 	removeAll(L, -1, 0); //now only the index exist (removeOnEmptied set to false)
 
-	//printList(L); // Index: member[] means that each member < index
+	//printList(L); // Index: member[] means that each member < index (< : topologically)
 
 	//Sort
 	while (!isEmpty(L)) {
@@ -36,7 +36,7 @@ int main() {
 		while (ptr) {
 			if (memberSize(ptr) == 0) { //There's no number less than ptr->key in topology sense
 				cout << ptr->key << " ";
-				removeAll(L, ptr->key, 0);
+				removeAll(L, ptr->key, 0); //Remove all ocurences of ptr->key after it is printed out (removeOnEmptied set to false)
 				removeIndex(L, ptr->key);
 			}
 			ptr = ptr->nextIndex;

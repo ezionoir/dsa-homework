@@ -23,9 +23,9 @@ void radixSort(vector<int> &num, int k) {
 			add(L, (num[i] / (int)pow(k, d)) % k, num[i]); //Add num[i] to its corresponding bucket 
 		int ind = 0, n = 0;
 		while (ind < k) {
-			while (memberSize(L, ind) != 0) //while bucket ind still have number left
-				num[n++] = pop(L, ind); //add the last element to the array (in-place)
-			ind++;
+			while (memberSize(L, ind) != 0) //while bucket ind still has number left
+				num[n++] = pop(L, ind); //add back the last element to the array (in-place) and remove said element
+			ind++; //move to next bucket
 		}
 	}
 	removeList(L);
