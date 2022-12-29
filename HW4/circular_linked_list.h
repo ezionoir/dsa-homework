@@ -8,7 +8,6 @@ struct List {
 	Node *tail;
 };
 
-
 bool isEmpty(List *L);
 
 List* createList();

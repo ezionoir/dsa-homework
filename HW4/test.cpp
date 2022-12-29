@@ -1,3 +1,5 @@
+//This file is for demonstration purpose and is not required in Homework instruction
+
 #include "circular_linked_list.h"
 #include <iostream>
 using namespace std;
