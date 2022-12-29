@@ -18,28 +18,29 @@ vector<int> kmpTable(string pattern) {
 
 //https://www.geeksforgeeks.org/kmp-algorithm-for-pattern-searching/
 vector<int> searchKnuthMorrisPratt(string text, string pattern) {
-	vector<int> matchIndices;
+	vector<int> matchIndices; //Hold the start position of matches;
 	int textLength = text.length();
 	int patternLength = pattern.length();
 
+	//Preprocessing
 	vector<int> prefix = kmpTable(pattern);
 
-	int i = 0;
-	int j = 0;
-	while ((textLength - i) >= (patternLength - j)) {
-		if (pattern[j] == text[i]) {
-			j++;
-			i++;
+	int textIndex = 0;
+	int patternIndex = 0;
+	while ((textLength - textIndex) >= (patternLength - patternIndex)) {
+		if (pattern[patternIndex] == text[textIndex]) {
+			patternIndex++;
+			textIndex++;
 		}
-		if (j == patternLength) {
-			matchIndices.push_back(i - j);
-			j = prefix[j - 1];
+		if (patternIndex == patternLength) { //there's a match
+			matchIndices.push_back(textIndex - patternIndex);
+			patternIndex = prefix[patternIndex - 1];
 		}
-		else if (i < textLength && pattern[j] != text[i]) {
-			if (j != 0)
-				j = prefix[j - 1];
+		else if (textIndex < textLength && pattern[patternIndex] != text[textIndex]) {
+			if (patternIndex != 0)
+				patternIndex = prefix[patternIndex - 1];
 			else
-				i = i + 1;
+				textIndex = textIndex + 1;
 		}
 	}
 	return matchIndices;

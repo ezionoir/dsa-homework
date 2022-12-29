@@ -7,7 +7,7 @@ using namespace std;
 
 //https://www.geeksforgeeks.org/rabin-karp-algorithm-for-pattern-searching/
 vector<int> searchRabinKarp(string text, string pattern) {
-	vector<int> matchIndices;
+	vector<int> matchIndices; //Hold the start position of matches;
 	int textLength = text.length();
 	int patternLength = pattern.length();
 
@@ -19,12 +19,12 @@ vector<int> searchRabinKarp(string text, string pattern) {
 		hash = (hash * RK_BASE) % RK_MODULO;
 
 	for (int i = 0; i < patternLength; i++) {
-		patternHash = (RK_BASE * patternHash + pattern[i]) % RK_MODULO;
-		textHash = (RK_BASE * textHash + text[i]) % RK_MODULO;
+		patternHash = (patternHash * RK_BASE + pattern[i]) % RK_MODULO;
+		textHash = (textHash * RK_BASE + text[i]) % RK_MODULO; //only patternLength-sized part of text is calculated
 	}
 
 	for (int i = 0; i <= textLength - patternLength; i++) {
-		if (patternHash == textHash) {
+		if (patternHash == textHash) { //Hash matches, check one by one
 			int j = 0;
 			for (; j < patternLength; j++)
 				if (text[i + j] != pattern[j])
@@ -33,7 +33,8 @@ vector<int> searchRabinKarp(string text, string pattern) {
 				matchIndices.push_back(i);
 		}
 		if (i < textLength - patternLength) {
-			textHash = (RK_BASE * (textHash - text[i] * hash) + text[i + patternLength]) % RK_MODULO;
+			//Calculate the hash of next text part
+			textHash = ((textHash - text[i] * hash) * RK_BASE + text[i + patternLength]) % RK_MODULO;
 			if (textHash < 0)
 				textHash = (textHash + RK_MODULO);
 		}

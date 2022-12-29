@@ -9,28 +9,29 @@ int max(int a, int b) {
 }
 //https://www.geeksforgeeks.org/boyer-moore-algorithm-for-pattern-searching/
 vector<int> searchBoyerMoore(string text, string pattern) {
-	vector<int> matchIndices;
+	vector<int> matchIndices; //Hold the start position of matches;
 	int textLength = text.length();
 	int patternLength = pattern.length();
 
-	vector<int> badChars(CHAR_RANGE, -1);
+	//Preprocessing
+	vector<int> badChars(CHAR_RANGE, -1); //default all to -1
 	for (int i = 0; i < pattern.size(); i++)
 		badChars[(int)pattern[i]] = i;
 
-	int s = 0;
-	while(s <= (textLength - patternLength)) {
+	int shift = 0;
+	while(shift <= (textLength - patternLength)) {
 		int j = patternLength - 1;
-		while(j >= 0 && pattern[j] == text[s + j])
+		//matching pattern and text at position shift
+		while(j >= 0 && pattern[j] == text[shift + j])
 			j--;
-		if (j < 0) {
-			matchIndices.push_back(s);
-			if ((s + patternLength) < textLength)
-				s += patternLength - badChars[text[s + patternLength]];
-			else s++;
-
+		if (j < 0) { //Whole match
+			matchIndices.push_back(shift);
+			if ((shift + patternLength) < textLength)
+				shift += patternLength - badChars[text[shift + patternLength]];
+			else shift++;
 		}
 		else
-			s += max(1, j - badChars[text[s + j]]);
+			shift += max(1, j - badChars[text[shift + j]]);
 	}
 	return matchIndices;
 }
