@@ -20,11 +20,11 @@ void radixSort(vector<int> &num, int k) {
 	int max = *max_element(num.begin(), num.end());
 	for (int d = 0; d < getNumIteration(max, k); d++) {
 		for (int i = 0; i < num.size(); i++)
-			add(L, (num[i] / (int)pow(k, d)) % k, num[i]);
+			add(L, (num[i] / (int)pow(k, d)) % k, num[i]); //Add num[i] to its corresponding bucket 
 		int ind = 0, n = 0;
 		while (ind < k) {
-			while (memberSize(L, ind) != 0)
-				num[n++] = pop(L, ind);
+			while (memberSize(L, ind) != 0) //while bucket ind still have number left
+				num[n++] = pop(L, ind); //add the last element to the array (in-place)
 			ind++;
 		}
 	}
