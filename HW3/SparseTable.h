@@ -23,7 +23,6 @@ public:
     int _nRow, _nCol;
 public:
     SparseTable(string name);
-    // SparseTable(string name, vector<int> arr, int (*getAlpha)(int x, int y));
     SparseTable(string name, vector<int> arr, int type);
     ~SparseTable();
 public:

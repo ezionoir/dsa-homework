@@ -1,5 +1,6 @@
 #include "./SparseTable.h"
 
+// Import a table from file
 SparseTable::SparseTable(string name) {
     string fileName = "./";
     fileName += name + ".txt";
@@ -20,26 +21,7 @@ SparseTable::SparseTable(string name) {
     reader.close();
 }
 
-// SparseTable::SparseTable(string name, vector<int> arr, int (*getAlpha)(int x, int y)) {
-//     _name = name;
-
-//     _nRow = arr.size();
-//     _nCol = int(ceil(log2(arr.size() + 1)));
-
-//     _table = new int*[_nRow];
-//     for (int i = 0; i < _nRow; ++i)
-//         _table[i] = new int[_nCol];
-
-//     for (int i = 0; i < _nRow; ++i)
-//         _table[i][0] = arr[i];
-
-//     for (int j = 1; j < _nCol; ++j) {
-//         int interval = 1 << (j - 1);
-//         for (int i = 0; i + interval * 2  - 1 < _nRow; ++i)
-//             _table[i][j] = getAlpha(_table[i][j - 1], _table[i + interval][j - 1]);
-//     }
-// }
-
+// Create table from array
 SparseTable::SparseTable(string name, vector<int> arr, int type) {
     _name = name;
     _type = type;
@@ -50,6 +32,7 @@ SparseTable::SparseTable(string name, vector<int> arr, int type) {
     for (int i = 0; i < _nRow; ++i)
         _table[i] = new int[_nCol];
 
+    // The first row for interval = 1 (an element itself is an interval)
     for (int i = 0; i < _nRow; ++i)
         _table[i][0] = arr[i];
 
@@ -67,8 +50,9 @@ SparseTable::SparseTable(string name, vector<int> arr, int type) {
     }
 
     for (int j = 1; j < _nCol; ++j) {
-        int interval = 1 << (j - 1);
+        int interval = 1 << (j - 1);    // = 2 ^ (j - 1)
         for (int i = 0; i + interval * 2  - 1 < _nRow; ++i)
+            // The alpha of the bigger interval is the "more alpha" between the 2 sub-intervals' alphas
             _table[i][j] = getAlpha(_table[i][j - 1], _table[i + interval][j - 1]);
     }
 }
@@ -101,6 +85,7 @@ ostream& operator<<(ostream& writer, const SparseTable& st) {
     return writer;
 }
 
+// Make query on [lower..upper]
 int SparseTable::query(int lower, int upper) {
     int j = int(floor(log2(upper - lower + 1)));
 
