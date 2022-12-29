@@ -8,14 +8,14 @@ using namespace std;
 
 struct ListNode {
     string ID;
-    int order;
-    int priority;
+    int order;      // Node's order = k <=> it is the k-th node in queue (by time added)
+    int priority;   // The lower priority value, the higher priority of node
     ListNode* next;
 };
 
 struct Queue {
-    ListNode* head; // dummy head
-    int nNode;
+    ListNode* head; // Queue's always initialized with a dummy head node
+    int nNode;      // Current number of nodes in queue
 };
 
 bool isEmpty(Queue q);

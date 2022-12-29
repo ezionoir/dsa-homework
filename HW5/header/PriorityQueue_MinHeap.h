@@ -9,11 +9,11 @@ using namespace std;
 
 struct HeapNode {
     string ID;
-    int priority;
-    int order;
+    int priority;   // The lower priority value, the higher priority of node
+    int order;      // Node's order = k <=> it is the k-th node in queue (by time added)
 };
 
-typedef vector<HeapNode> Heap;
+typedef vector<HeapNode> Heap;  // Use a vector as container for heap, since it's easy to update the order when removing a node
 
 bool isEmpty(Heap q);
 HeapNode getHeapNode(string ID, int priority);

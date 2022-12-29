@@ -4,6 +4,7 @@ bool isEmpty(Heap q) {
     return (q.empty());
 }
 
+// Create a node with given ID and priority
 HeapNode getHeapNode(string ID, int priority) {
     HeapNode hn;
     hn.ID = ID;
@@ -13,6 +14,7 @@ HeapNode getHeapNode(string ID, int priority) {
     return hn;
 }
 
+// Check in upward direction. If a node has smaller priority than its parent, shift it up
 void shiftUp(Heap &q, int i) {
     if ((i < 0) || (i >= q.size())) return;
 
@@ -23,6 +25,7 @@ void shiftUp(Heap &q, int i) {
     }
 }
 
+// Check in downward direction. If a node is not smaller than both its children, shift it down
 void shiftDown(Heap& q, int i) {
     if ((i < 0) || (i >= q.size())) return;
     
@@ -42,20 +45,24 @@ void shiftDown(Heap& q, int i) {
 }
 
 void Insert(Heap &q, string ID, int priority) {
+    // Append the new node to the vector
     q.push_back(getHeapNode(ID, priority));
     q[q.size() - 1].order = q.size();
+    // Shift up the new node
     shiftUp(q, q.size() - 1);
 }
 
 HeapNode Extract(Heap &q) {
     if (isEmpty(q)) return getHeapNode("", 0);
 
+    // Swap the top of heap with the last, then pop it out
     HeapNode rtn = q[0];
     swap(q[0], q[q.size() - 1]);
     q.pop_back();
+    // Shift down the new top
     shiftDown(q, 0);
 
-    // Update the order
+    // Update the order (if a node's order is greater than removed node's order, decrease it by 1)
     int order = rtn.order;
     for (int i = 0; i < q.size(); ++i)
         if (q[i].order > order) --(q[i].order);
@@ -70,13 +77,21 @@ bool Remove(Heap &q, string ID) {
     
     if (i == q.size()) return false;
     
+    // Swap the current node with the last, then pop it out
     swap(q[i], q[q.size() - 1]);
     int order = q[q.size() - 1].order;
     q.pop_back();
 
-    // Update the order
+    // Update the order (if a node's order is greater than removed node's order, decrease it by 1)
     for (int j = 0; j < q.size(); ++j)
         if (q[j].order > order) --(q[j].order);
+
+    // Update the node
+    int parent = (i - 1) / 2;
+    if (parent > 0 && q[i].priority < q[parent].priority)
+        shiftUp(q, i);
+    else
+        shiftDown(q, i);
 
     return true;
 }
@@ -101,6 +116,7 @@ bool changePriority(Heap &q, string ID, int newPriority) {
     return true;
 }
 
+// Format: (ID, priority, order)
 void Print(Heap q) {
     if (isEmpty(q)) {
         cout << "Queue is empty!" << endl;
