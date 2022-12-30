@@ -1,11 +1,14 @@
 #include "../header/Trie.h"
-#include "../header/Subprocess.h"
 
 #include <iostream>
 #include <fstream>
 #include <vector>
 
 using namespace std;
+
+int getPositionInAlphabet(char ch) {
+    return int(ch - 'a');
+}
 
 TrieNode* getNode() {
     TrieNode* newNode = new TrieNode;
@@ -22,8 +25,10 @@ void Insert(TrieNode* &Dic, string word, int ID) {
     }
     TrieNode* curNode = Dic;
 
+    // Travese by each character in word
     for (int i = 0; i < word.length(); ++i) {
         int pos = getPositionInAlphabet(word[i]);
+        // If Trie has not grown to the current character, expand it
         if (curNode->next[pos] == nullptr)
             for (int i = 0; i < ALPHABET_SIZE; ++i)
                 curNode->next[i] = getNode();
@@ -100,12 +105,11 @@ void Remove(TrieNode* Dic, string word) {
     Remove(Dic, word, 0);
 }
 
-// Neu node bi xoa la node la thi tra ve true, neu la node trong thi tra ve false
+// If node to remove is leaf, return true, otherwise return false
 bool Remove(TrieNode* Dic, string word, int index) {
-    // Tu khong xuat hien trong tu dien
+    // If the word is not appear in dictionary, we do not need to remove any node
     if (Dic == nullptr) return false;
 
-    // Tu co xuat hien trong tu dien
     if (index == word.length()) {
         Dic->ID = DOES_NOT_EXIST;
 
@@ -116,8 +120,10 @@ bool Remove(TrieNode* Dic, string word, int index) {
     }
 
     int pos = getPositionInAlphabet(word[index]);
+    // If we remove a leaf, then its siblings may be useless. If so, remove them
     if (Remove(Dic->next[pos], word, index + 1)) {
         int i = 0;
+        // Check if all the children contain no words
         for (; i < ALPHABET_SIZE; ++i) {
             int j = 0;
             for (; j < ALPHABET_SIZE; ++j)
