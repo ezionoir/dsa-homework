@@ -14,10 +14,10 @@ struct List {
 struct NodePair {
 	Node *previous;
 	Node *current;
-	//current && !previous : head
-	//!current && previous : not found
-	//!current && !previous : empty
-	//current && previous : found pair 
+	//current && !previous : current points to the head
+	//!current && previous : cant find node
+	//!current && !previous : list is empty
+	//current && previous : found the node and its predecessor 
 };
 
 Node* createNode(int key) {
@@ -47,10 +47,12 @@ NodePair findIndex(List *L, int index) {
 	return np;
 }
 
+//This function create index if it doesn't exist
 Node* getIndex(List *L, int index) {
 	NodePair np = findIndex(L, index);
 	Node *ind = np.current;
-	if (ind) return ind;
+	if (ind) return ind; //index exists
+	//Else create index
 	Node *nd = createNode(index);
 	nd->nextIndex = L->head;
 	L->head = nd;
@@ -75,11 +77,12 @@ void printMembers(Node *index) {
 	}
 }
 
+//Remove members too to avoid leaking memory
 void removeIndex(List *L, NodePair np) {
 	removeMembers(np.current);
-	if (!np.previous) //found and it is the head
+	if (!np.previous) //The index is the head
 		L->head = np.current->nextIndex;
-	else //found and it is not the head
+	else //Some other index
 		np.previous->nextIndex = np.current->nextIndex;
 	delete np.current;
 }
@@ -103,7 +106,7 @@ int memberSize(Node *index) {
 
 int memberSize(List *L, int index) {
 	NodePair np = findIndex(L, index);
-	if (np.current) {
+	if (np.current) { //found index
 		return memberSize(np.current);
 	}
 	return 0;
@@ -112,14 +115,16 @@ int memberSize(List *L, int index) {
 void add(List *L, int index, int data) {
 	Node *ind = getIndex(L, index);
 	Node *nd = createNode(data);
+	//addHead
 	nd->nextMember = ind->nextMember;
 	ind->nextMember = nd;
 }
 
+//Remove the first occurence of data in an index
 void remove(List *L, int index, int data, bool removeOnEmptied = 1) {
 	NodePair np = findIndex(L, index);
-	if (!np.current) return;
-	bool found = 0;
+	if (!np.current) return; //not found the index
+	bool found = 0; //whether data is present in List's index' elements
 	Node *prev = np.current;
 	Node *ptr = np.current->nextMember;
 	while (ptr) {
@@ -133,12 +138,13 @@ void remove(List *L, int index, int data, bool removeOnEmptied = 1) {
 	if (found) {
 		prev->nextMember = ptr->nextMember;
 		delete ptr;
-		if (removeOnEmptied)
+		if (removeOnEmptied) //remove whole index if it is empty after member removal
 			if (memberSize(np.current) == 0)
 				removeIndex(L, np);
 	}
 }
 
+//Get and remove the last element of an index
 int pop(List *L, int index, bool removeOnEmptied = 1) {
 	NodePair np = findIndex(L, index);
 	Node *prev = np.current;
@@ -150,12 +156,13 @@ int pop(List *L, int index, bool removeOnEmptied = 1) {
 	prev->nextMember = nullptr;
 	int res = ptr->key;
 	delete ptr;
-	if (removeOnEmptied)
+	if (removeOnEmptied) //remove whole index if it is empty after member removal
 		if (memberSize(np.current) == 0)
 			removeIndex(L, np);
 	return res;
 }
 
+//Remove first occurence of data in all indices
 void removeAll(List *L, int data, bool removeOnEmptied = 1) {
 	Node *ptr = L->head;
 	while (ptr) {
@@ -171,6 +178,7 @@ List* createList() {
 }
 
 void clearList(List *L) {
+	//Remove each index (and each member too) until list is empty 
 	while (!isEmpty(L)) {
 		removeIndex(L, L->head->key);
 	}
@@ -185,9 +193,12 @@ void removeList(List *&L) {
 void printList(List *L) {
 	Node *ptr = L->head;
 	while (ptr) {
+		//Print index
 		cout << ptr->key << ": ";
+		//Print member
 		printMembers(ptr);
 		cout << endl;
+		//Next index
 		ptr = ptr->nextIndex;
 	}
 }

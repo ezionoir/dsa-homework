@@ -25,7 +25,8 @@ searchFunction getSearchFunction(string algorithm) {
 }
 
 int main(int argc, char const *argv[]) {
-	ifstream inputFile(argv[1]); //open file
+	//Read from file input
+	ifstream inputFile(argv[1]);
 	if (!inputFile) {
 		cout << "Failed to open " << argv[1] << endl;
 		return EXIT_IO;
@@ -37,15 +38,16 @@ int main(int argc, char const *argv[]) {
 	string algorithm(argv[3]);
 
 	searchFunction search = getSearchFunction(algorithm);
-	if (!search) {
+	if (!search) { //nullptr
 		cout << "Unrecognized algorithm: " << algorithm << endl;
 		return EXIT_ARGV;
 	}
 
+	//Record execution time
 	auto start = high_resolution_clock::now();
 	vector<int> matches = search(text, pattern);
 	auto stop = high_resolution_clock::now();
-	auto duration = duration_cast<microseconds>(stop - start);
+	auto duration = duration_cast<microseconds>(stop - start); //millisecond = microsecond / 1000
 
 	cout << matches.size() << " - " << duration.count() / 1000.0 << endl;
 	return EXIT_OK;

@@ -251,13 +251,13 @@ RBNode* lookUp(RBNode *root, int key, RBNode *nil) {
 	else return lookUp(root->right, key, nil);
 }
 
-//Height starts at 0 at root
+//Height starts at 0 at root, only accept tree's root as argument
 int Height(RBNode *root) {
 	RBNode *nil = root->parent;
 	return nodeHeight(root, nil);
 }
 
-//Dont count NIL leaf for height, root's height is 1
+//Dont count NIL leaf for height, root's height is 1, only accept tree's root as argument
 int BlackHeight(RBNode *root) {
 	int h = 0;
 	RBNode *nil = root->parent;
@@ -291,6 +291,7 @@ int Remove(RBNode *root, int key, RBNode *nil) {
 	return 1;
 }
 
+//This function is for testing purpose and is not required in Homework instruction
 // int main() {
 // 	int a[] = {30,88,81,6,66,10,97,13,18,79};
 // 	int n = sizeof(a) / sizeof(int);

@@ -1,3 +1,5 @@
+//This file is for testing purpose and is not required in Homework instruction
+
 #include "multilist.h"
 #include <iostream>
 using namespace std;
