@@ -17,8 +17,9 @@ void leftRotate(RBNode *&root, RBNode *x, RBNode *nil) {
 		y->left->parent = x;
 	y->parent = x->parent;
 
-	if (x->parent == nil)
+	if (x->parent == nil) //x is originally root
 		root = y;
+	//Preserve left/right direction when assign y to x's spot
 	else if (x == x->parent->left)
 		x->parent->left = y;
 	else
@@ -34,8 +35,9 @@ void rightRotate(RBNode *&root, RBNode *y, RBNode *nil) {
 		x->right->parent = y;
 	x->parent = y->parent;
 
-	if (y->parent == nil)
+	if (y->parent == nil) //y is originally root
 		root = x;
+	//Preserve left/right direction when assign x to y's spot
 	else if (y == y->parent->right)
 		y->parent->right = x;
 	else
@@ -44,6 +46,7 @@ void rightRotate(RBNode *&root, RBNode *y, RBNode *nil) {
 	y->parent = x;
 }
 
+//Insert using BST algorithm
 void insertBST(RBNode *&root, RBNode *x, RBNode *nil) {
 	RBNode *y = nil;
 	RBNode *z = root;
@@ -53,7 +56,7 @@ void insertBST(RBNode *&root, RBNode *x, RBNode *nil) {
 		else z = z->right;
 	}
 	x->parent = y;
-	if (y == nil) root = x;
+	if (y == nil) root = x; //empty
 	else if (x->key < y->key) y->left = x;
 	else y->right = x;
 }
@@ -102,9 +105,10 @@ void insertAdjust(RBNode *&root, RBNode *x, RBNode *nil) {
 			insertAdjustLeft(root, x, nil);
 		else
 			insertAdjustRight(root, x, nil);
-	root->color = BLACK;
+	root->color = BLACK; //root node is always black
 }
 
+//Find smallest node that is larger than x
 RBNode* succesor(RBNode *x, RBNode *nil) {
 	if (x->right != nil) {
 		RBNode *ptr = x->right;
@@ -209,6 +213,7 @@ int max(int a, int b) {
 	return a > b ? a : b;
 }
 
+//Leaf node's height is 0
 int nodeHeight(RBNode *x, RBNode *nil) {
 	if (x == nil) return -1;
 	return max(nodeHeight(x->left, nil), nodeHeight(x->right, nil)) + 1;
@@ -292,6 +297,7 @@ int Remove(RBNode *root, int key, RBNode *nil) {
 }
 
 //This function is for testing purpose and is not required in Homework instruction
+
 // int main() {
 // 	int a[] = {30,88,81,6,66,10,97,13,18,79};
 // 	int n = sizeof(a) / sizeof(int);
